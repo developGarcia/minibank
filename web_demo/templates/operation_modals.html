@@ -1,0 +1,33 @@
+<!-- Modal para Operaciones -->
+<div class="modal fade" id="operationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="operationTitle">Operación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="operationForm">
+                    <input type="hidden" id="operationAccountId">
+                    <input type="hidden" id="operationType">
+                    
+                    <div class="mb-3">
+                        <label for="operationAmount" class="form-label">Monto</label>
+                        <input type="number" class="form-control" id="operationAmount" 
+                               step="0.01" min="0.01" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="operationDescription" class="form-label">Descripción</label>
+                        <input type="text" class="form-control" id="operationDescription" 
+                               placeholder="Descripción de la operación">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="operationForm" id="operationButton" class="btn">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>

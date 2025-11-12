@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Banco Digital{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bank-gradient text-white py-5 rounded-3 mb-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    Bienvenido a <span class="text-warning">MiniBank</span>
+                </h1>
+                <p class="lead mb-4">
+                    Tu banco digital del futuro. Implementado con arquitectura C4 para máxima seguridad y escalabilidad.
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    {% if not user %}
+                    <a href="{{ url_for('login') }}" class="btn btn-warning btn-lg px-4">
+                        <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                    </a>
+                    <a href="{{ url_for('architecture') }}" class="btn btn-outline-light btn-lg px-4">
+                        <i class="fas fa-diagram-project me-2"></i>Ver Arquitectura
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-warning btn-lg px-4">
+                        <i class="fas fa-tachometer-alt me-2"></i>Ir al Dashboard
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-mobile-alt display-1 text-warning"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- System Status -->
+<div class="container">
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="bank-card p-4">
+                <h3 class="mb-4">
+                    <i class="fas fa-heartbeat text-primary me-2"></i>
+                    Estado del Sistema
+                </h3>
+                
+                {% if health.overall_status == 'healthy' %}
+                <div class="alert alert-success d-flex align-items-center">
+                    <i class="fas fa-check-circle fa-2x me-3"></i>
+                    <div>
+                        <h5 class="mb-1">Sistema Operativo al 100%</h5>
+                        <p class="mb-0">Todos los servicios están funcionando correctamente</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-warning d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+                    <div>
+                        <h5 class="mb-1">Sistema con Problemas</h5>
+                        <p class="mb-0">Algunos servicios pueden no estar disponibles</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="row">
+                    {% for service, status in health.services.items() %}
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-0 {% if status.status == 'healthy' %}bg-success text-white{% else %}bg-danger text-white{% endif %}">
+                            <div class="card-body text-center">
+                                {% if service == 'auth' %}
+                                    <i class="fas fa-key fa-2x mb-2"></i>
+                                    <h6>Auth Service</h6>
+                                {% elif service == 'accounts' %}
+                                    <i class="fas fa-wallet fa-2x mb-2"></i>
+                                    <h6>Account Service</h6>
+                                {% else %}
+                                    <i class="fas fa-server fa-2x mb-2"></i>
+                                    <h6>{{ service }}</h6>
+                                {% endif %}
+                                <span class="badge {% if status.status == 'healthy' %}bg-light text-dark{% else %}bg-warning text-dark{% endif %}">
+                                    {{ status.status|upper }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row">
+        <div class="col-12 mb-4">
+            <h2 class="text-center mb-5">Características del Sistema</h2>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="bank-card p-4 text-center h-100">
+                <div class="feature-icon mx-auto">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4>Seguridad Avanzada</h4>
+                <p class="text-muted">Autenticación robusta y tokens de seguridad para proteger tus transacciones.</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="bank-card p-4 text-center h-100">
+                <div class="feature-icon mx-auto">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h4>Base de Datos SQLite</h4>
+                <p class="text-muted">Persistencia local confiable con transacciones ACID para máxima integridad.</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="bank-card p-4 text-center h-100">
+                <div class="feature-icon mx-auto">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <h4>Arquitectura C4</h4>
+                <p class="text-muted">Sistema modular y escalable implementado con metodología C4.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Users -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="bank-card p-4">
+                <h4 class="mb-4">
+                    <i class="fas fa-users text-primary me-2"></i>
+                    Usuarios de Demostración
+                </h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card border-primary">
+                            <div class="card-body">
+                                <h5 class="card-title">josej</h5>
+                                <p class="card-text">Cliente estándar con cuentas de ahorro y corriente</p>
+                                <small class="text-muted">Contraseña: universidad123</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-warning">
+                            <div class="card-body">
+                                <h5 class="card-title">admin</h5>
+                                <p class="card-text">Administrador del sistema con acceso completo</p>
+                                <small class="text-muted">Contraseña: admin123</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-info">
+                            <div class="card-body">
+                                <h5 class="card-title">cliente</h5>
+                                <p class="card-text">Cliente adicional para pruebas del sistema</p>
+                                <small class="text-muted">Contraseña: cliente123</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
