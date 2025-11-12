@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
+            --primary-color: #1a237e;
+            --secondary-color: #283593;
             --success-color: #2ecc71;
             --warning-color: #f39c12;
             --danger-color: #e74c3c;
@@ -29,7 +29,7 @@
         }
         
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-2px);
         }
         
         .account-card {
@@ -40,31 +40,13 @@
             border-left: 4px solid var(--success-color);
         }
         
-        .transaction-card {
-            border-left: 4px solid var(--warning-color);
-        }
-        
         .btn-primary {
             background-color: var(--secondary-color);
             border: none;
         }
         
-        .btn-success {
-            background-color: var(--success-color);
-            border: none;
-        }
-        
-        .btn-warning {
-            background-color: var(--warning-color);
-            border: none;
-        }
-        
-        .badge-verified {
-            background-color: var(--success-color);
-        }
-        
-        .badge-pending {
-            background-color: var(--warning-color);
+        .btn-primary:hover {
+            background-color: var(--primary-color);
         }
         
         .navbar {
@@ -82,16 +64,12 @@
             padding: 12px 20px;
             border-radius: 8px;
             margin: 5px 10px;
+            transition: all 0.3s;
         }
         
         .sidebar .nav-link:hover, .sidebar .nav-link.active {
             background-color: var(--secondary-color);
             color: white;
-        }
-        
-        .sidebar .nav-link i {
-            width: 24px;
-            text-align: center;
         }
         
         .account-balance {
@@ -111,10 +89,33 @@
         
         .transaction-amount.positive {
             color: var(--success-color);
+            font-weight: 600;
         }
         
         .transaction-amount.negative {
             color: var(--danger-color);
+            font-weight: 600;
+        }
+        
+        .quick-action-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+        
+        .logout-btn {
+            color: #dc3545 !important;
+        }
+        
+        .logout-btn:hover {
+            background-color: #dc3545 !important;
+            color: white !important;
+        }
+
+        .disabled-link {
+            pointer-events: none;
+            opacity: 0.6;
+            cursor: not-allowed;
         }
     </style>
 </head>
@@ -122,27 +123,29 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
                 <i class="fas fa-university me-2"></i>
                 MiniBank - Sistema Universitario
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle me-1"></i> José Estudiante
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configuración</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
-                        </ul>
-                    </li>
-                </ul>
+            <div class="d-flex align-items-center">
+                <span class="badge bg-light text-dark me-3">
+                    <i class="fas fa-user me-1"></i>Cliente
+                </span>
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle me-1"></i> José Estudiante
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item disabled-link" href="#"><i class="fas fa-user me-2"></i>Mi Perfil</a></li>
+                        <li><a class="dropdown-item disabled-link" href="#"><i class="fas fa-cog me-2"></i>Configuración</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item logout-btn" href="{{ url_for('logout') }}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
@@ -154,39 +157,49 @@
                 <div class="position-sticky pt-3">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">
+                            <a class="nav-link active" href="{{ url_for('dashboard') }}">
                                 <i class="fas fa-tachometer-alt me-2"></i>
                                 Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link disabled-link" href="#">
                                 <i class="fas fa-wallet me-2"></i>
                                 Mis Cuentas
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link disabled-link" href="#">
                                 <i class="fas fa-exchange-alt me-2"></i>
                                 Transferencias
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link disabled-link" href="#">
                                 <i class="fas fa-history me-2"></i>
                                 Historial
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link disabled-link" href="#">
                                 <i class="fas fa-piggy-bank me-2"></i>
                                 Ahorros
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-cog me-2"></i>
-                                Configuración
+                            <hr>
+                            <small class="text-muted px-3">OPERACIONES ESPECIALES</small>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled-link" href="#">
+                                <i class="fas fa-cash-register me-2"></i>
+                                Punto de Cajero
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('architecture') }}">
+                                <i class="fas fa-diagram-project me-2"></i>
+                                Ver Arquitectura
                             </a>
                         </li>
                     </ul>
@@ -199,33 +212,34 @@
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">
                         <i class="fas fa-tachometer-alt text-primary me-2"></i>
-                        Dashboard
+                        Dashboard - Cliente
                     </h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
-                        <span class="badge bg-primary fs-6">
-                            <i class="fas fa-user me-1"></i>Estudiante Verificado
+                        <span class="badge bg-success fs-6">
+                            <i class="fas fa-check-circle me-1"></i>Cuenta Verificada
                         </span>
                     </div>
                 </div>
 
+                <!-- Alert Section -->
                 <div class="row mb-4">
                     <div class="col-12">
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle me-2"></i>
-                            Bienvenido de vuelta, <strong>José Estudiante</strong>. Aquí puedes gestionar tus cuentas y realizar operaciones.
+                            Bienvenido de vuelta, <strong>José Estudiante</strong>. Último acceso: Hoy, 10:30 AM
                         </div>
                     </div>
                 </div>
 
                 <!-- Stats Cards -->
                 <div class="row mb-4">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                         <div class="card stats-card h-100">
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <h6 class="card-title text-uppercase text-muted mb-2">Cuentas Activas</h6>
-                                        <h2 class="mb-0">1</h2>
+                                        <h2 class="mb-0">2</h2>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-wallet fa-2x text-success"></i>
@@ -234,13 +248,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                         <div class="card stats-card h-100">
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <h6 class="card-title text-uppercase text-muted mb-2">Saldo Total</h6>
-                                        <h2 class="mb-0">$2,700.00</h2>
+                                        <h2 class="mb-0">$4,250.00</h2>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-dollar-sign fa-2x text-primary"></i>
@@ -249,13 +263,28 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card h-100">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6 class="card-title text-uppercase text-muted mb-2">Última Transacción</h6>
+                                        <h6 class="mb-0">Hace 2 días</h6>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-exchange-alt fa-2x text-warning"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
                         <div class="card stats-card h-100">
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <h6 class="card-title text-uppercase text-muted mb-2">Estado</h6>
-                                        <span class="badge badge-verified p-2">Verificado</span>
+                                        <span class="badge bg-success p-2">Verificado</span>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-check-circle fa-2x text-success"></i>
@@ -266,18 +295,56 @@
                     </div>
                 </div>
 
-                <!-- Accounts and Quick Actions -->
+                <!-- Quick Actions -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card quick-action-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-white mb-3">
+                                    <i class="fas fa-bolt me-2"></i>Acciones Rápidas
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-3 mb-2">
+                                        <button class="btn btn-light w-100 disabled-link">
+                                            <i class="fas fa-exchange-alt me-2"></i>Transferir
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <button class="btn btn-light w-100 disabled-link">
+                                            <i class="fas fa-money-bill-wave me-2"></i>Retirar
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <button class="btn btn-light w-100 disabled-link">
+                                            <i class="fas fa-plus-circle me-2"></i>Depositar
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <button class="btn btn-light w-100 disabled-link">
+                                            <i class="fas fa-file-invoice me-2"></i>Estados
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accounts and Transactions -->
                 <div class="row">
                     <!-- Accounts Section -->
                     <div class="col-lg-8 mb-4">
                         <div class="card">
-                            <div class="card-header bg-white">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">
                                     <i class="fas fa-wallet me-2"></i>Mis Cuentas
                                 </h5>
+                                <button class="btn btn-sm btn-outline-primary disabled-link">
+                                    Ver Todas
+                                </button>
                             </div>
                             <div class="card-body">
-                                <!-- Account Card -->
+                                <!-- Account 1 -->
                                 <div class="card account-card mb-3">
                                     <div class="card-body">
                                         <div class="row align-items-center">
@@ -287,39 +354,50 @@
                                                         <i class="fas fa-credit-card fa-2x text-primary"></i>
                                                     </div>
                                                     <div>
-                                                        <h5 class="card-title mb-1">Cuenta M8002</h5>
-                                                        <p class="text-muted mb-1">Cuenta Principal</p>
-                                                        <span class="badge bg-warning text-dark">
-                                                            <i class="fas fa-exclamation-triangle me-1"></i>Advertir
-                                                        </span>
+                                                        <h5 class="card-title mb-1">Cuenta Corriente</h5>
+                                                        <p class="text-muted mb-1">Nº CC-8002</p>
+                                                        <span class="badge bg-primary">Activa</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-4 text-md-end">
-                                                <h3 class="account-balance mt-2">$2,700.00</h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer bg-white">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#depositModal">
-                                                    <i class="fas fa-plus-circle me-1"></i>Depositar
-                                                </button>
-                                            </div>
-                                            <div class="col-6">
-                                                <button class="btn btn-warning w-100" data-bs-toggle="modal" data-bs-target="#withdrawModal">
-                                                    <i class="fas fa-minus-circle me-1"></i>Retirar
-                                                </button>
+                                                <h3 class="account-balance">$2,700.00</h3>
+                                                <small class="text-muted">Saldo disponible</small>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 
-                                <!-- Add New Account Button -->
-                                <button class="btn btn-outline-primary w-100">
-                                    <i class="fas fa-plus me-1"></i>Abrir Nueva Cuenta
-                                </button>
+                                <!-- Account 2 -->
+                                <div class="card account-card mb-3">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-8">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="me-3">
+                                                        <i class="fas fa-piggy-bank fa-2x text-success"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h5 class="card-title mb-1">Cuenta de Ahorros</h5>
+                                                        <p class="text-muted mb-1">Nº CA-4512</p>
+                                                        <span class="badge bg-success">Activa</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 text-md-end">
+                                                <h3 class="account-balance">$1,550.00</h3>
+                                                <small class="text-muted">Rendimiento: 2.5%</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Demo Notice -->
+                                <div class="alert alert-warning mt-3">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>Demo Académica:</strong> Esta es una demostración de la arquitectura C4. 
+                                    Las funcionalidades de transferencias, depósitos y retiros están deshabilitadas en esta versión.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -327,41 +405,55 @@
                     <!-- Recent Transactions -->
                     <div class="col-lg-4 mb-4">
                         <div class="card">
-                            <div class="card-header bg-white">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">
                                     <i class="fas fa-history me-2"></i>Últimas Transacciones
                                 </h5>
+                                <button class="btn btn-sm btn-outline-primary disabled-link">
+                                    Ver Más
+                                </button>
                             </div>
                             <div class="card-body">
                                 <div class="transaction-item">
-                                    <div class="d-flex justify-content-between">
+                                    <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <h6 class="mb-0">Depósito</h6>
-                                            <small class="text-muted">Hoy, 10:30 AM</small>
-                                        </div>
-                                        <span class="transaction-amount positive">+$500.00</span>
-                                    </div>
-                                </div>
-                                <div class="transaction-item">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <h6 class="mb-0">Retiro</h6>
-                                            <small class="text-muted">Ayer, 04:15 PM</small>
-                                        </div>
-                                        <span class="transaction-amount negative">-$200.00</span>
-                                    </div>
-                                </div>
-                                <div class="transaction-item">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <h6 class="mb-0">Transferencia</h6>
-                                            <small class="text-muted">15 Oct, 09:45 AM</small>
+                                            <h6 class="mb-0">Transferencia a María López</h6>
+                                            <small class="text-muted">15 Nov, 2023 - 10:30 AM</small>
                                         </div>
                                         <span class="transaction-amount negative">-$150.00</span>
                                     </div>
                                 </div>
-                                <div class="text-center mt-3">
-                                    <a href="#" class="btn btn-sm btn-outline-primary">Ver Todo el Historial</a>
+                                <div class="transaction-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-0">Transferencia de Carlos Ruiz</h6>
+                                            <small class="text-muted">14 Nov, 2023 - 03:15 PM</small>
+                                        </div>
+                                        <span class="transaction-amount positive">+$300.00</span>
+                                    </div>
+                                </div>
+                                <div class="transaction-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-0">Pago de Servicios</h6>
+                                            <small class="text-muted">12 Nov, 2023 - 09:45 AM</small>
+                                        </div>
+                                        <span class="transaction-amount negative">-$75.50</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Status -->
+                        <div class="card mt-4">
+                            <div class="card-body text-center">
+                                <i class="fas fa-shield-alt fa-2x text-success mb-3"></i>
+                                <h6>Sesión Segura</h6>
+                                <small class="text-muted">Tu conexión está protegida</small>
+                                <div class="mt-3">
+                                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -371,115 +463,24 @@
         </div>
     </div>
 
-    <!-- Deposit Modal -->
-    <div class="modal fade" id="depositModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas fa-plus-circle text-success me-2"></i>Realizar Depósito
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="depositForm">
-                        <div class="mb-3">
-                            <label for="accountSelect" class="form-label">Cuenta Destino</label>
-                            <select class="form-select" id="accountSelect">
-                                <option selected>M8002 - Cuenta Principal</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="depositAmount" class="form-label">Monto a Depositar</label>
-                            <div class="input-group">
-                                <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" id="depositAmount" placeholder="0.00" min="0" step="0.01">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="depositDescription" class="form-label">Descripción (Opcional)</label>
-                            <input type="text" class="form-control" id="depositDescription" placeholder="Ej: Depósito de efectivo">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" id="confirmDeposit">Confirmar Depósito</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Withdraw Modal -->
-    <div class="modal fade" id="withdrawModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas fa-minus-circle text-warning me-2"></i>Realizar Retiro
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="withdrawForm">
-                        <div class="mb-3">
-                            <label for="withdrawAccount" class="form-label">Cuenta de Origen</label>
-                            <select class="form-select" id="withdrawAccount">
-                                <option selected>M8002 - Cuenta Principal ($2,700.00)</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="withdrawAmount" class="form-label">Monto a Retirar</label>
-                            <div class="input-group">
-                                <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" id="withdrawAmount" placeholder="0.00" min="0" step="0.01" max="2700">
-                            </div>
-                            <div class="form-text">Saldo disponible: $2,700.00</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="withdrawDescription" class="form-label">Descripción (Opcional)</label>
-                            <input type="text" class="form-control" id="withdrawDescription" placeholder="Ej: Retiro para gastos">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-warning" id="confirmWithdraw">Confirmar Retiro</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Basic form validation and interaction
         document.addEventListener('DOMContentLoaded', function() {
-            // Deposit confirmation
-            document.getElementById('confirmDeposit').addEventListener('click', function() {
-                const amount = document.getElementById('depositAmount').value;
-                if (!amount || amount <= 0) {
-                    alert('Por favor ingresa un monto válido para depositar.');
-                    return;
-                }
-                alert(`Depósito de $${amount} realizado exitosamente.`);
-                document.getElementById('depositForm').reset();
-                bootstrap.Modal.getInstance(document.getElementById('depositModal')).hide();
+            // Manejar logout con confirmación
+            document.querySelectorAll('.logout-btn').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    if (!confirm('¿Estás seguro de que deseas cerrar la sesión?')) {
+                        e.preventDefault();
+                    }
+                });
             });
-            
-            // Withdraw confirmation
-            document.getElementById('confirmWithdraw').addEventListener('click', function() {
-                const amount = document.getElementById('withdrawAmount').value;
-                if (!amount || amount <= 0) {
-                    alert('Por favor ingresa un monto válido para retirar.');
-                    return;
-                }
-                if (amount > 2700) {
-                    alert('No tienes suficiente saldo para realizar este retiro.');
-                    return;
-                }
-                alert(`Retiro de $${amount} realizado exitosamente.`);
-                document.getElementById('withdrawForm').reset();
-                bootstrap.Modal.getInstance(document.getElementById('withdrawModal')).hide();
+
+            // Mostrar mensaje para funcionalidades deshabilitadas
+            document.querySelectorAll('.disabled-link').forEach(function(element) {
+                element.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('Esta funcionalidad está deshabilitada en la demo académica. El sistema muestra la arquitectura C4 implementada.');
+                });
             });
         });
     </script>

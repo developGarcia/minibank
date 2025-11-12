@@ -1,172 +1,531 @@
-{% extends "base.html" %}
-
-{% block title %}Inicio - Banco Digital{% endblock %}
-
-{% block content %}
-<!-- Hero Section -->
-<section class="bank-gradient text-white py-5 rounded-3 mb-5">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <h1 class="display-4 fw-bold mb-4">
-                    Bienvenido a <span class="text-warning">MiniBank</span>
-                </h1>
-                <p class="lead mb-4">
-                    Tu banco digital del futuro. Implementado con arquitectura C4 para máxima seguridad y escalabilidad.
-                </p>
-                <div class="d-flex gap-3 flex-wrap">
-                    {% if not user %}
-                    <a href="{{ url_for('login') }}" class="btn btn-warning btn-lg px-4">
-                        <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
-                    </a>
-                    <a href="{{ url_for('architecture') }}" class="btn btn-outline-light btn-lg px-4">
-                        <i class="fas fa-diagram-project me-2"></i>Ver Arquitectura
-                    </a>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniBank - Tu Banco Digital Confiable</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1a237e;
+            --secondary-blue: #283593;
+            --accent-gold: #ffab00;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+        }
+        
+        .bank-gradient {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+        }
+        
+        .navbar-brand img {
+            height: 40px;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(26, 35, 126, 0.9), rgba(40, 53, 147, 0.9)), 
+                        url('https://images.unsplash.com/photo-1601597111158-2fceff292cdc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+        }
+        
+        .feature-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .security-badge {
+            background: linear-gradient(45deg, var(--accent-gold), #ffd54f);
+            color: var(--dark-text);
+        }
+        
+        .btn-bank-primary {
+            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+        
+        .btn-bank-primary:hover {
+            background: linear-gradient(45deg, var(--secondary-blue), var(--primary-blue));
+            color: white;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+        
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .service-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .footer {
+            background: var(--dark-text);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .login-panel {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 30px;
+        }
+        
+        .news-card {
+            border-left: 4px solid var(--accent-gold);
+        }
+        
+        .demo-accounts {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bank-gradient sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="fas fa-university fa-2x me-2"></i>
+                <span class="fw-bold">MiniBank</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Personas
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Cuentas</a></li>
+                            <li><a class="dropdown-item" href="#">Tarjetas</a></li>
+                            <li><a class="dropdown-item" href="#">Inversiones</a></li>
+                            <li><a class="dropdown-item" href="#">Préstamos</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Empresas
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Cuentas Corporativas</a></li>
+                            <li><a class="dropdown-item" href="#">Financiamiento</a></li>
+                            <li><a class="dropdown-item" href="#">Servicios de Nómina</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Ayuda</a>
+                    </li>
+                </ul>
+                
+                <div class="navbar-nav">
+                    {% if user %}
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i> {{ user.nombre }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('dashboard') }}">Mi Cuenta</a></li>
+                            <li><a class="dropdown-item" href="#">Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
                     {% else %}
-                    <a href="{{ url_for('dashboard') }}" class="btn btn-warning btn-lg px-4">
-                        <i class="fas fa-tachometer-alt me-2"></i>Ir al Dashboard
+                    <a class="nav-link" href="{{ url_for('login') }}">
+                        <i class="fas fa-sign-in-alt me-1"></i> Acceso Clientes
                     </a>
                     {% endif %}
                 </div>
             </div>
-            <div class="col-lg-6 text-center">
-                <i class="fas fa-mobile-alt display-1 text-warning"></i>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">
+                        Tu futuro financiero, <span class="text-warning">simplificado</span>
+                    </h1>
+                    <p class="lead mb-4">
+                        MiniBank combina la seguridad tradicional con la innovación digital. 
+                        Gestiona tu dinero de forma inteligente con nuestra plataforma C4.
+                    </p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        {% if not user %}
+                        <a href="{{ url_for('login') }}" class="btn btn-warning btn-lg px-4 py-2">
+                            <i class="fas fa-lock me-2"></i>Acceso Seguro
+                        </a>
+                        <a href="#services" class="btn btn-outline-light btn-lg px-4">
+                            Conocer Más
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-warning btn-lg px-4">
+                            <i class="fas fa-tachometer-alt me-2"></i>Ir al Dashboard
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <!-- Solo mostrar el panel de login si el usuario NO está autenticado -->
+                    {% if not user %}
+                    <div class="login-panel">
+                        <h4 class="text-center mb-4">
+                            <i class="fas fa-sign-in-alt me-2"></i>
+                            Acceso al Sistema
+                        </h4>
+                        
+                        {% if error %}
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            {{ error }}
+                        </div>
+                        {% endif %}
+
+                        <form method="POST" action="{{ url_for('login') }}">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Usuario</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control" id="username" name="username" 
+                                           placeholder="Ingrese su usuario" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="password" name="password" 
+                                           placeholder="Ingrese su contraseña" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="remember">
+                                <label class="form-check-label" for="remember">Recordar usuario</label>
+                            </div>
+
+                            <button type="submit" class="btn btn-bank-primary w-100 py-2">
+                                <i class="fas fa-sign-in-alt me-2"></i>Ingresar al Sistema
+                            </button>
+                        </form>
+
+                        <hr>
+                        
+                        <div class="demo-accounts text-center">
+                            <small>
+                                <strong>Demo Académica:</strong><br>
+                                Sistema de demostración con arquitectura C4
+                            </small>
+                        </div>
+                    </div>
+                    {% else %}
+                    <!-- Si el usuario está autenticado, mostrar información de bienvenida -->
+                    <div class="login-panel text-center">
+                        <div class="mb-4">
+                            <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+                            <h4>¡Bienvenido de vuelta!</h4>
+                            <p class="text-muted">Estás autenticado en el sistema</p>
+                        </div>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-bank-primary w-100 py-2">
+                            <i class="fas fa-tachometer-alt me-2"></i>Ir al Dashboard
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- System Status -->
-<div class="container">
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="bank-card p-4">
-                <h3 class="mb-4">
-                    <i class="fas fa-heartbeat text-primary me-2"></i>
-                    Estado del Sistema
-                </h3>
+    <!-- Security Badge -->
+    <section class="py-3 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-shield-alt fa-2x text-success me-3"></i>
+                        <div>
+                            <h6 class="mb-0">Sistema Protegido con Autenticación C4</h6>
+                            <small class="text-muted">Arquitectura de microservicios segura</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <span class="badge security-badge fs-6">
+                        <i class="fas fa-lock me-1"></i>Conexión Segura SSL
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 mb-4">
+                    <div class="stat-number">50K+</div>
+                    <p class="text-muted">Clientes Confían en Nosotros</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stat-number">$2.5B</div>
+                    <p class="text-muted">En Activos Gestionados</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stat-number">99.9%</div>
+                    <p class="text-muted">Tiempo de Actividad</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stat-number">24/7</div>
+                    <p class="text-muted">Soporte al Cliente</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12 text-center">
+                    <h2 class="fw-bold mb-3">Nuestros Servicios</h2>
+                    <p class="lead text-muted">Soluciones financieras diseñadas para tus necesidades</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="service-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h5>Banca Digital</h5>
+                            <p class="text-muted">
+                                Accede a tu cuenta desde cualquier dispositivo. 
+                                Transferencias, pagos y consultas 24/7.
+                            </p>
+                            {% if not user %}
+                            <a href="{{ url_for('login') }}" class="btn btn-outline-primary">Acceder</a>
+                            {% else %}
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary">Ir al Dashboard</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
                 
-                {% if health.overall_status == 'healthy' %}
-                <div class="alert alert-success d-flex align-items-center">
-                    <i class="fas fa-check-circle fa-2x me-3"></i>
-                    <div>
-                        <h5 class="mb-1">Sistema Operativo al 100%</h5>
-                        <p class="mb-0">Todos los servicios están funcionando correctamente</p>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="service-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <h5>Tarjetas</h5>
+                            <p class="text-muted">
+                                Tarjetas de crédito y débito con los mejores 
+                                beneficios y seguridad avanzada.
+                            </p>
+                            {% if not user %}
+                            <a href="{{ url_for('login') }}" class="btn btn-outline-primary">Acceder</a>
+                            {% else %}
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary">Ver Tarjetas</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-                {% else %}
-                <div class="alert alert-warning d-flex align-items-center">
-                    <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
-                    <div>
-                        <h5 class="mb-1">Sistema con Problemas</h5>
-                        <p class="mb-0">Algunos servicios pueden no estar disponibles</p>
+                
+                <div class="col-md-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="service-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h5>Inversiones</h5>
+                            <p class="text-muted">
+                                Haz crecer tu dinero con nuestros fondos de 
+                                inversión y asesoría especializada.
+                            </p>
+                            {% if not user %}
+                            <a href="{{ url_for('login') }}" class="btn btn-outline-primary">Acceder</a>
+                            {% else %}
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary">Ver Inversiones</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-                {% endif %}
+            </div>
+        </div>
+    </section>
 
-                <div class="row">
-                    {% for service, status in health.services.items() %}
-                    <div class="col-md-3 mb-3">
-                        <div class="card border-0 {% if status.status == 'healthy' %}bg-success text-white{% else %}bg-danger text-white{% endif %}">
-                            <div class="card-body text-center">
-                                {% if service == 'auth' %}
-                                    <i class="fas fa-key fa-2x mb-2"></i>
-                                    <h6>Auth Service</h6>
-                                {% elif service == 'accounts' %}
-                                    <i class="fas fa-wallet fa-2x mb-2"></i>
-                                    <h6>Account Service</h6>
-                                {% else %}
-                                    <i class="fas fa-server fa-2x mb-2"></i>
-                                    <h6>{{ service }}</h6>
-                                {% endif %}
-                                <span class="badge {% if status.status == 'healthy' %}bg-light text-dark{% else %}bg-warning text-dark{% endif %}">
-                                    {{ status.status|upper }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
+    <!-- Architecture Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="fw-bold mb-4">Tecnología de Vanguardia</h2>
+                    <p class="lead mb-4">
+                        Implementamos arquitectura C4 para garantizar la máxima seguridad, 
+                        escalabilidad y rendimiento de nuestros servicios.
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Microservicios independientes y seguros
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Autenticación robusta con tokens JWT
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Base de datos SQLite con transacciones ACID
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check text-success me-2"></i>
+                            API Gateway para gestión centralizada
+                        </li>
+                    </ul>
+                    <a href="{{ url_for('architecture') }}" class="btn btn-bank-primary">
+                        <i class="fas fa-diagram-project me-2"></i>Ver Arquitectura
+                    </a>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
+                         alt="Tecnología Bancaria" class="img-fluid rounded shadow">
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Features Section -->
-    <div class="row">
-        <div class="col-12 mb-4">
-            <h2 class="text-center mb-5">Características del Sistema</h2>
-        </div>
-        
-        <div class="col-md-4 mb-4">
-            <div class="bank-card p-4 text-center h-100">
-                <div class="feature-icon mx-auto">
-                    <i class="fas fa-shield-alt"></i>
+    <!-- Demo Info Section -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h3 class="fw-bold mb-3">Sistema de Demostración Académica</h3>
+                    <p class="mb-0">
+                        Esta es una implementación académica que demuestra una arquitectura C4 completa 
+                        con microservicios para gestión bancaria. Proyecto universitario con fines educativos.
+                    </p>
                 </div>
-                <h4>Seguridad Avanzada</h4>
-                <p class="text-muted">Autenticación robusta y tokens de seguridad para proteger tus transacciones.</p>
+                <div class="col-lg-4 text-center">
+                    <div class="bg-white text-dark rounded p-3">
+                        <small class="text-muted">Para acceder al sistema:</small>
+                        <br>
+                        <a href="{{ url_for('login') }}" class="btn btn-warning btn-sm mt-2">
+                            <i class="fas fa-sign-in-alt me-1"></i>Ir al Login
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <div class="col-md-4 mb-4">
-            <div class="bank-card p-4 text-center h-100">
-                <div class="feature-icon mx-auto">
-                    <i class="fas fa-database"></i>
-                </div>
-                <h4>Base de Datos SQLite</h4>
-                <p class="text-muted">Persistencia local confiable con transacciones ACID para máxima integridad.</p>
-            </div>
-        </div>
-        
-        <div class="col-md-4 mb-4">
-            <div class="bank-card p-4 text-center h-100">
-                <div class="feature-icon mx-auto">
-                    <i class="fas fa-project-diagram"></i>
-                </div>
-                <h4>Arquitectura C4</h4>
-                <p class="text-muted">Sistema modular y escalable implementado con metodología C4.</p>
-            </div>
-        </div>
-    </div>
+    </section>
 
-    <!-- Demo Users -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <div class="bank-card p-4">
-                <h4 class="mb-4">
-                    <i class="fas fa-users text-primary me-2"></i>
-                    Usuarios de Demostración
-                </h4>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card border-primary">
-                            <div class="card-body">
-                                <h5 class="card-title">josej</h5>
-                                <p class="card-text">Cliente estándar con cuentas de ahorro y corriente</p>
-                                <small class="text-muted">Contraseña: universidad123</small>
-                            </div>
-                        </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-university me-2"></i>MiniBank
+                    </h5>
+                    <p class="text-light">
+                        Tu banco digital confiable. Combinamos tradición bancaria 
+                        con innovación tecnológica para servirte mejor.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-light"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-linkedin fa-lg"></i></a>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card border-warning">
-                            <div class="card-body">
-                                <h5 class="card-title">admin</h5>
-                                <p class="card-text">Administrador del sistema con acceso completo</p>
-                                <small class="text-muted">Contraseña: admin123</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card border-info">
-                            <div class="card-body">
-                                <h5 class="card-title">cliente</h5>
-                                <p class="card-text">Cliente adicional para pruebas del sistema</p>
-                                <small class="text-muted">Contraseña: cliente123</small>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Servicios</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Cuentas</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Tarjetas</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Préstamos</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Inversiones</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Ayuda</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Contacto</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Preguntas Frecuentes</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Soporte Técnico</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Centro de Ayuda</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h6>Información Académica</h6>
+                    <ul class="list-unstyled text-light">
+                        <li class="mb-2">
+                            <i class="fas fa-graduation-cap me-2"></i>Proyecto Universitario
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-diagram-project me-2"></i>Arquitectura C4
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-code me-2"></i>Microservicios
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="row">
+                <div class="col-md-6">
+                    <small class="text-light">
+                        &copy; 2023 MiniBank. Proyecto Académico - Todos los derechos reservados.
+                    </small>
+                </div>
+                <div class="col-md-6 text-end">
+                    <small class="text-light">
+                        Sistema de Demostración - Arquitectura C4
+                    </small>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-{% endblock %}
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
